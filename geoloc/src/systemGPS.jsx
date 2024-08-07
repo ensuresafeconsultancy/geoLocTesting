@@ -1,16 +1,19 @@
 import { useState, useEffect } from 'react'
 
 const SystemGPS = () => {
-    const [location, setLocation] = useState({ lat: null, lon: null, accuracy: null });
+    // const [location, setLocation] = useState({ lat: null, lon: null, accuracy: null });
     const [initialLoc , seInitialLoc]= useState({ lat: null, lon: null});
     const [error, setError] = useState(null);
     const [address, setAddress] = useState('');
   
     const [distance , setDistance] = useState('');
 
-    //mobile lat and long - balaji data
-    const homeLat = 11.5342999;
-    const homeLong = 79.4849891;
+    //mobile lat and long - balaji data - working
+    // const homeLat = 11.5342999;
+    // const homeLong = 79.4849891;
+
+    const homeLat = import.meta.env.COMPANY_LAT;
+    const homeLong = import.meta.env.COMPANY_LONG;
 
     // const homeLat2 = 11.5342973;
     // const homeLong2 = 79.4850291;
@@ -31,9 +34,6 @@ const SystemGPS = () => {
               const distance = calculateDistance(homeLat , homeLong ,  currentLat , currentLon );
               setDistance(distance.toFixed(2));
 
-
-
-              
               // getGoogleLocation();
             },
             (error) => {
