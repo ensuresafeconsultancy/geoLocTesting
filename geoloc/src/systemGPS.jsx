@@ -103,9 +103,6 @@ const SystemGPS = () => {
 
         Distance : {distance} meters
 
-
-
-
     </div>
   )
 }
