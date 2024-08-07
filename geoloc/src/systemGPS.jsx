@@ -4,6 +4,7 @@ const SystemGPS = () => {
     const [location, setLocation] = useState({ lat: null, lon: null, accuracy: null });
     const [initialLoc , seInitialLoc]= useState({ lat: null, lon: null});
     const [error, setError] = useState(null);
+    const [address, setAddress] = useState('');
   
     const [distance , setDistance] = useState('');
 
@@ -26,8 +27,11 @@ const SystemGPS = () => {
               console.log(`Initial Location: ${currentLat}, ${currentLon}`);
 
               console.log();
+              fetchAddress(currentLat, currentLon);
               const distance = calculateDistance(homeLat , homeLong ,  currentLat , currentLon );
-              setDistance(distance);
+              setDistance(distance.toFixed(2));
+
+
 
               
               // getGoogleLocation();
@@ -67,13 +71,35 @@ const SystemGPS = () => {
         const distance = R * c; // in meters
         return distance;
       };
+
+
+      const fetchAddress = async (lat, lng) => {
+        const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
+        const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`);
+        const data = await response.json();
+  
+        if (data.status === 'OK' && data.results.length > 0) {
+          const relevantResult = data.results.find(result => result.types.includes("street_address")) || data.results[0];
+          setAddress(relevantResult.formatted_address);
+        } else {
+          setError('Unable to retrieve address');
+        }
+      };
+  
     
 
   return (
     <div>
         <button onClick={()=>{seInitialLoc({ lat: null, lon: null}); setDistance('Loading...'); getLocation()}} >Get my Current location Coordinate: </button>
         <p>{`Initial Location: ${initialLoc.lat? initialLoc.lat : "Loading..."}, ${initialLoc.lon? initialLoc.lon : "Loading..."}`}</p>
-        <p>{error? error : ''}</p><br /><br />
+        {error ? (
+        <p>Error: {error}</p>
+      ) : (
+        <p>Address: {address}</p>
+      )}
+
+        {/* <button>Get Distance</button> <br /><br />
+        <button>Stop Distance finding</button><br /><br /> */}
 
         Distance : {distance} meters
 
