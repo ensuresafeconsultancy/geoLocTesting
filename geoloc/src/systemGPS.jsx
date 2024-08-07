@@ -12,8 +12,7 @@ const SystemGPS = () => {
     // const homeLat = 11.5342999;
     // const homeLong = 79.4849891;
 
-    const homeLat = import.meta.env.COMPANY_LAT;
-    const homeLong = import.meta.env.COMPANY_LONG;
+    
 
     // const homeLat2 = 11.5342973;
     // const homeLong2 = 79.4850291;
@@ -31,7 +30,12 @@ const SystemGPS = () => {
 
               console.log();
               fetchAddress(currentLat, currentLon);
-              const distance = calculateDistance(homeLat , homeLong ,  currentLat , currentLon );
+
+              const homeLat = import.meta.env.VITE_COMPANY_LAT;
+              const homeLong = import.meta.env.VITE_COMPANY_LONG;
+
+              console.log(homeLat, homeLong, currentLat, currentLon);
+              const distance = calculateDistance(parseFloat(homeLat) , parseFloat(homeLong) ,  currentLat , currentLon );
               setDistance(distance.toFixed(2));
 
               // getGoogleLocation();
